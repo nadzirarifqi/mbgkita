@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Recipe - Ekosistem MBG</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+</head>
+<body class="auth-page">
+
+    <div class="card card-large">
+        <div class="section-header">
+            <h2>Edit Recipe</h2>
+            <button type="button" class="secondary-btn" onclick="history.back()" style="padding: 8px 15px;">Back</button>
+        </div>
+        <p class="card-subtitle">Update your recipe standards for the National Nutrition Program.</p>
+
+        <form id="editRecipeForm">
+            <input type="hidden" id="menuID">
+
+            <label class="input-label">Recipe Name</label>
+            <input type="text" id="menuName" required>
+
+            <label class="input-label">Short Description</label>
+            <textarea id="menuDesc"></textarea>
+
+            <label class="input-label">Image URL</label>
+            <input type="text" id="menuImage">
+
+            <label class="input-label">Cooking Video URL (Optional)</label>
+            <input type="text" id="menuVideo" placeholder="https://youtube.com/watch?v=...">
+
+            <hr class="section-divider" style="margin: 25px 0; border-top: 1px solid #eee;">
+
+            <div class="section-header">
+                <h3>Ingredients Details</h3>
+                <button type="button" class="add-btn" onclick="addIngredientRow()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+            </div>
+            <div id="ingredientContainer"></div>
+
+            <hr class="section-divider" style="margin: 25px 0; border-top: 1px solid #eee;">
+
+            <div class="section-header">
+                <h3>Cooking Procedure</h3>
+                <button type="button" class="add-btn" onclick="addStepRow()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+            </div>
+            <div id="stepContainer"></div>
+
+            <div class="form-actions" style="margin-top: 30px; display: flex; gap: 15px;">
+                <button type="submit" class="primary-btn">Save Changes</button>
+                <button type="button" class="secondary-btn" onclick="history.back()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <datalist id="common-ingredients"></datalist>
+    <datalist id="common-urts"></datalist>
+    <script src="add-recipe-logic.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetID = urlParams.get('id');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!targetID) {
+                alert("No Menu ID found.");
+                window.location.href = "developer_dashboard.html";
+                return;
+            }
+            loadFullRecipeData(targetID);
+        });
+
+        // Override form submission in edit_menu.html
+        document.getElementById('editRecipeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 1. Capture Ingredient Rows
+            const ingredients = [];
+            document.querySelectorAll('#ingredientContainer .dynamic-row').forEach(row => {
+                ingredients.push({
+                    name: row.querySelector('.ing-name').value,
+                    qty: row.querySelector('.ing-qty').value,
+                    unit: row.querySelector('.ing-urt').value
+                });
+            });
+
+            // 2. Capture Procedure Steps
+            const steps = [];
+            document.querySelectorAll('.step-text').forEach(input => {
+                if(input.value.trim() !== "") steps.push(input.value);
+            });
+
+            // 3. Construct Payload (Matches your Apps Script structure)
+            const payload = {
+                menuID: document.getElementById('menuID').value,
+                menuName: document.getElementById('menuName').value,
+                menuDesc: document.getElementById('menuDesc').value,
+                menuImage: document.getElementById('menuImage').value,
+                menuVideo: document.getElementById('menuVideo').value, // This captures the new Video URL
+                ingredients: JSON.stringify(ingredients),
+                procedure: JSON.stringify(steps),
+                userId: sessionStorage.getItem('userID')
+            };
+
+            // 4. Send to Apps Script with action 'updateMenu'
+            fetch(`${scriptURL}?action=updateMenu`, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.text())
+            .then(msg => {
+                alert(msg);
+                window.location.href = "developer_dashboard.html";
+            })
+            .catch(err => alert("Update Error: " + err));
+        });
+
+        async function loadFullRecipeData(id) {
+            try {
+                // 1. Fetch Basic Info (Menu Databases)
+                const menuRes = await fetch(`${scriptURL}?action=readAll&targetSheet=Menu%20Databases`);
+                const menuData = await menuRes.json();
+                const recipe = menuData.find(item => item.MenuID === id);
+
+                if (!recipe) throw new Error("Recipe not found");
+
+                // Fill Basic Fields
+                document.getElementById('menuID').value = recipe.MenuID;
+                document.getElementById('menuName').value = recipe.Menu_Name;
+                document.getElementById('menuDesc').value = recipe.Menu_Description;
+                document.getElementById('menuImage').value = recipe.Menu_Image;
+                // If you have a video input field:
+                if(document.getElementById('menuVideo')) {
+                    document.getElementById('menuVideo').value = recipe.Menu_Video || "";
+                }
+
+                // 2. Fetch Ingredients (Menu Ingredients sheet)
+                const ingRes = await fetch(`${scriptURL}?action=readAll&targetSheet=Menu%20Ingredients`);
+                const allIngredients = await ingRes.json();
+                const myIngredients = allIngredients.filter(ing => ing.MenuID === id);
+
+                const ingContainer = document.getElementById('ingredientContainer');
+                ingContainer.innerHTML = ""; // Clear initial
+                myIngredients.forEach(ing => {
+                    addIngredientRow();
+                    const rows = ingContainer.querySelectorAll('.dynamic-row');
+                    const lastRow = rows[rows.length - 1];
+                    lastRow.querySelector('.ing-name').value = ing.Ingredient_Name;
+                    const nameInput = lastRow.querySelector('.ing-name');
+                    fetchNutritionInfo(nameInput);
+                    lastRow.querySelector('.ing-qty').value = ing.Ingredient_Quantity;
+                    lastRow.querySelector('.ing-urt').value = ing.URT;
+                });
+
+                // 3. Fetch Procedures (Menu Procedure sheet)
+                const procRes = await fetch(`${scriptURL}?action=readAll&targetSheet=Menu%20Procedure`);
+                const allProcs = await procRes.json();
+                const myProcs = allProcs.filter(proc => proc.menuID === id);
+
+                const procContainer = document.getElementById('stepContainer');
+                procContainer.innerHTML = ""; // Clear initial
+                myProcs.forEach(proc => {
+                    addStepRow();
+                    const rows = procContainer.querySelectorAll('.step-text');
+                    rows[rows.length - 1].value = proc.procedure;
+                });
+
+            } catch (err) {
+                console.error("Error loading full data:", err);
+                alert("Failed to load full recipe details. Check console for details.");
+            }
+}
+    </script>
+    <datalist id="common-ingredients"></datalist>
+    <datalist id="common-urts"></datalist>
+</body>
+</html> 

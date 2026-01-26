@@ -1,0 +1,329 @@
+/* --- 1. MODERN VARIABLES & RESET --- */
+:root {
+    --primary-gradient: linear-gradient(135deg, #1c4d8d 0%, #0f172a 100%);
+    --primary: #1c4d8d;
+    --primary-light: #2a6bbd;
+    --accent: #58a45c;
+    --bg-light: #f8fafc;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --danger: #ef4444;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+    --radius: 12px;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+body { 
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; 
+    background-color: var(--bg-light); 
+    color: var(--text-main); 
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* --- 2. AUTHENTICATION PAGES (Login, Register, T&C) --- */
+body.auth-page {
+    background: var(--primary-gradient); /* */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo-container { text-align: center; margin-bottom: 25px; }
+
+.center-logo {
+    width: 85px; height: 85px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+    box-shadow: var(--shadow-md);
+    background: white;
+    object-fit: cover;
+}
+
+/* Card System */
+.card {
+    background: var(--white);
+    padding: 35px;
+    border-radius: var(--radius);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25);
+    width: 100%;
+    max-width: 420px; /* */
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-large { 
+    max-width: 850px; 
+    margin: 20px auto; 
+}
+
+/* --- 3. DASHBOARD & NAVIGATION (Adjusted) --- */
+.top-bar {
+    background: var(--primary-gradient); /* Same as index */
+    width: 100%; /* Ensures it fills the full width of the viewport */
+    height: 70px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-content {
+    width: 100%; /* Responsive width */
+    max-width: 1200px; /* Limits max width on large screens */
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between; /* Brand left, Avatar right */
+    align-items: center;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.nav-logo { height: 40px; border-radius: 50%; border: 2px solid white; }
+.app-name { font-weight: 700; color: white; font-size: 1.1rem; }
+
+.user-avatar {
+    font-size: 1.4rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-content {
+    display: none; position: absolute; right: 20px; top: 60px;
+    background: white; min-width: 220px; border-radius: var(--radius);
+    box-shadow: var(--shadow-md); border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.dropdown-content.active { display: block; }
+
+/* --- 4. FORM ELEMENTS & DASHBOARD GRID --- */
+.responsive-container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; }
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px; /* */
+    gap: 25px;
+}
+
+input, select, textarea {
+    display: block; width: 100%; padding: 12px 16px; margin-bottom: 18px;
+    border-radius: 8px; border: 1px solid #e2e8f0; font-size: 1rem;
+}
+
+.button-login, .primary-btn {
+    background-color: var(--accent); color: white; font-weight: 600;
+    cursor: pointer; border: none; padding: 14px; border-radius: 10px; width: 100%;
+}
+
+.add-btn {
+    background-color: var(--primary);
+    color: var(--white);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px; /* Slightly rounded for a modern look */
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(28, 77, 141, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.add-btn:hover {
+    background-color: var(--primary-light);
+     /* Playful "flowy" rotation */
+    box-shadow: 0 6px 12px rgba(28, 77, 141, 0.3);
+}
+
+.add-btn:active {
+    transform:scale(0.95);
+}
+
+.log-container {
+    list-style: none;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.log-item {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.85rem;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.log-user {
+    color: var(--primary);
+}
+
+.log-time {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.log-details {
+    color: #444;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* --- 4.1 ADDITIONAL DASHBOARD STYLES --- */
+/* Container for the list */
+.vertical-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+/* Individual Recipe Card */
+.recipe-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #eef2f6;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recipe-card:hover {
+    transform: translateX(6px); /* Subtle "flowy" slide effect */
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+}
+
+/* Info Section */
+.recipe-info h4 {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.recipe-info p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    max-width: 450px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Keeps long descriptions tidy */
+}
+
+/* Actions & Badges */
+.recipe-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Status Colors */
+.status-badge.waiting { background: #fff7ed; color: #9a3412; }
+.status-badge.approved { background: #f0fdf4; color: #166534; }
+.status-badge.not-approved { background: #fef2f2; color: #991b1b; }
+
+.edit-btn {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.edit-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .recipe-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .recipe-actions {
+        width: 100%;
+        justify-content: space-between;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 12px;
+    }
+}
+
+
+/* --- Section Headers --- */
+.section-header {
+    display: flex; /* Aligns children in a row */
+    justify-content: space-between; /* Pushes text to left and button to right */
+    align-items: center; /* Centers them vertically */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.section-header h3 {
+    color: var(--primary);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+/* --- 5. DYNAMIC ROWS & MOBILE (Responsive) --- */
+.dynamic-row {
+    display: flex; gap: 10px; margin-bottom: 12px; align-items: center;
+    background: #f8fafc; padding: 12px; border-radius: 8px;
+}
+
+@media (max-width: 992px) {
+    .dashboard-grid { grid-template-columns: 1fr; } /* */
+}
+
+@media (max-width: 768px) {
+    .dynamic-row { flex-direction: column; align-items: stretch; }
+    .dynamic-row > * { width: 100% !important; }
+    .app-name { font-size: 0.9rem; }
+    .card-large { border-radius: 0; padding: 15px; }
+}

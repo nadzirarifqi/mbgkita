@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="auth-page">
+    <div class="card">
+        <h2>Register</h2>
+        <form id="regForm">
+            <input type="text" id="regOwner" placeholder="Account Owner Name" required>
+            <input type="text" id="regUser" placeholder="Username" required>
+            <input type="email" id="regEmail" placeholder="Email Address" required>
+            <input type="tel" id="regPhone" placeholder="Phone Number" required>
+            <input type="password" id="regPass" placeholder="Password" required>
+            
+            <label for="regRole">Role Access</label>
+            <select id="regRole" required>
+                <option value="" disabled selected>Select your role</option>
+                <option value="Recipe Developer">Recipe Developer</option>
+                <option value="Menu Planner">Menu Planner</option>
+                <option value="Supplier">Supplier</option>
+            </select>
+            
+            <button class="button-login" type="submit" class="reg-btn">Create Account</button>
+        </form>
+        <p class="footer-link">Already have an account? <a href="index.html">Login here!</a></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

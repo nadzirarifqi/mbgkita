@@ -1,0 +1,506 @@
+/* --- 1. MODERN VARIABLES & RESET --- */
+:root {
+    --primary-gradient: linear-gradient(135deg, #1c4d8d 0%, #0f172a 100%);
+    --primary: #1c4d8d;
+    --primary-light: #2a6bbd;
+    --accent: #58a45c;
+    --bg-light: #f8fafc;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --danger: #ef4444;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+    --radius: 12px;
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+body { 
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif; 
+    background-color: var(--bg-light); 
+    color: var(--text-main); 
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* --- 2. AUTHENTICATION PAGES (Login, Register, T&C) --- */
+body.auth-page {
+    background: var(--primary-gradient);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo-container { text-align: center; margin-bottom: 25px; }
+
+.center-logo {
+    width: 85px; height: 85px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+    box-shadow: var(--shadow-md);
+    background: white;
+    object-fit: cover;
+}
+
+.card {
+    background: var(--white);
+    padding: 35px;
+    border-radius: var(--radius);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25);
+    width: 100%;
+    max-width: 420px;
+    animation: slideUp 0.4s ease-out;
+}
+
+h2 .card {
+    text-align:center;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-large { 
+    max-width: 850px; 
+    margin: 20px auto; 
+}
+
+/* --- 2.1 LEGAL NOTICE STYLING (Index.html) --- */
+
+
+.legal-notice {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px dashed #e2e8f0;
+    text-align: center;
+}
+
+.notice-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.notice-box {
+    background: #f8fafc;
+    padding: 18px;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary);
+    font-size: 0.82rem;
+    color: var(--text-main);
+    line-height: 1.6;
+    text-align: justify;
+    font-style: italic;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    margin-bottom: 15px;
+}
+
+.notice-footer {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Penyesuaian khusus tombol agar tidak terlalu menempel dengan legal notice */
+.button-login {
+    margin-bottom: 10px;
+}
+
+
+/* --- 3. DASHBOARD & NAVIGATION --- */
+.top-bar {
+    background: var(--primary-gradient);
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand img {background-color:#fff7ed;}
+.nav-logo { height: 40px; border-radius: 50%; border: 2px solid white; }
+.app-name { font-weight: 700; color: white; font-size: 1.1rem; }
+
+
+.user-avatar {
+    font-size: 1.4rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    background: var(--white);
+    min-width: 240px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    z-index: 1001;
+    animation: dropdownFade 0.3s ease;
+}
+
+.dropdown-content.active { display: block; }
+
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-content.active {
+    display: block;
+}
+
+/* Header di dalam Dropdown */
+.dropdown-header {
+    padding: 20px 15px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-preview-img {
+    width: 45px;
+    height: 45px;
+    background: var(--primary-light);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.profile-info p#dropdownName {
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.profile-info p#dropdownRole {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 4px 0 0 0;
+}
+
+.dropdown-divider {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 0;
+}
+
+/* Link Navigasi Dropdown */
+.dropdown-links a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.dropdown-links a span {
+    font-size: 1.1rem;
+}
+
+.dropdown-links a:hover {
+    background: #f1f5f9;
+}
+
+.dropdown-links a.logout-link {
+    color: var(--danger);
+}
+
+.dropdown-links a.logout-link:hover {
+    background: #fef2f2;
+}
+
+/* --- 4. DASHBOARD GRID (New Section-Card Layout) --- */
+.responsive-container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; }
+
+.dashboard-grid {
+    display: grid;
+    grid-template-areas: 
+        "graph logs"
+        "recipes recipes";
+    grid-template-columns: 1.5fr 1fr;
+    gap: 25px;
+}
+
+/* Card wrappers for dashboard sections */
+.chart-section { grid-area: graph; }
+.log-section { grid-area: logs; }
+.recipes-section { grid-area: recipes; }
+
+/* Shared styling for dashboard section cards */
+.chart-section, .log-section, .recipes-section {
+    background: var(--white);
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #eef2f6;
+}
+
+/* Styling Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 25px;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 12px;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.close-modal {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-modal:hover { color: #333; }
+
+.detail-list {
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+.view-section { margin-top: 20px; }
+.view-section h3 { color: #1c4d8d; margin-bottom: 8px; }
+
+.view-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* --- 5. COMPONENT STYLES (Form & Components) --- */
+input, select, textarea {
+    display: block; width: 100%; padding: 12px 16px; margin-bottom: 18px;
+    border-radius: 8px; border: 1px solid #e2e8f0; font-size: 1rem;
+}
+
+/* Menambahkan ikon panah kecil pada input yang memiliki datalist */
+input[list] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 35px;
+    cursor: pointer;
+}
+
+input[list]:focus {
+    background-image: none; /* Hilangkan ikon saat mulai mengetik */
+}   
+
+.button-login, .primary-btn {
+    background-color: var(--accent); color: white; font-weight: 600;
+    cursor: pointer; border: none; padding: 14px; border-radius: 10px; width: 100%;
+}
+
+.secondary-btn {
+    background-color: transparent; color: var(--primary); border: 2px solid var(--primary);
+    cursor: pointer; padding: 12px; border-radius: 10px; width: 100%; font-weight: 600;
+    margin-top: 10px;;
+}
+
+.add-btn {
+    background-color: var(--primary);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 4px 6px rgba(28, 77, 141, 0.2);
+}
+
+.add-btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(28, 77, 141, 0.3);
+}
+
+.add-btn svg {
+    transition: transform 0.4s ease;
+}
+
+.add-btn:hover svg {
+    transform: rotate(90deg);
+}
+
+.delete-row-btn {
+    background-color: var(--danger);
+    color: var(--white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* --- 6. LOGS & LISTS --- */
+.log-container {
+    list-style: none; padding: 0; max-height: 300px; overflow-y: auto;
+}
+
+.log-item { padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
+.log-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.log-user { color: var(--primary); font-weight: 600; }
+.log-time { color: var(--text-muted); font-size: 0.75rem; }
+.log-details { color: #444; line-height: 1.4; }
+
+.vertical-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
+
+.recipe-card {
+    background: var(--bg-light);
+    padding: 20px;
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #eef2f6;
+}
+
+.recipe-card:hover {
+    transform: translateX(6px);
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.recipe-info h4 { color: var(--primary); font-size: 1.1rem; font-weight: 700; }
+.recipe-info p { color: var(--text-muted); font-size: 0.9rem; max-width: 450px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+
+.recipe-actions { display: flex; align-items: center; gap: 12px; }
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
+}
+
+/* Warna spesifik untuk tiap status */
+.status-badge.waiting { 
+    background: #fff7ed; /* Oranye muda */
+    color: #9a3412; 
+}
+
+.status-badge.approved { 
+    background: #f0fdf4; /* Hijau muda */
+    color: #166534; 
+}
+
+.status-badge.not-approved { 
+    background: #fef2f2; /* Merah muda */
+    color: #991b1b; 
+}
+
+.edit-btn {
+    background: transparent; color: var(--primary); border: 1px solid var(--primary);
+    padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+}
+
+.edit-btn:hover { background: var(--primary); color: white; }
+
+.section-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0;
+}
+
+/* --- 7. DYNAMIC ROWS & RESPONSIVENESS --- */
+.dynamic-row {
+    display: flex; gap: 10px; margin-bottom: 12px; align-items: center;
+    background: #f8fafc; padding: 12px; border-radius: 8px;
+}
+
+@media (max-width: 992px) {
+    .dashboard-grid { 
+        grid-template-areas: 
+            "graph"
+            "logs"
+            "recipes";
+        grid-template-columns: 1fr; 
+    }
+}
+
+@media (max-width: 768px) {
+    .recipe-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .recipe-actions { width: 100%; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 12px; }
+    .dynamic-row { flex-direction: column; align-items: stretch; }
+    .dynamic-row > * { width: 100% !important; }
+    .app-name { font-size: 0.9rem; }
+    .card-large { border-radius: 0; padding: 15px; }
+}

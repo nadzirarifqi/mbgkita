@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Ekosistem MBG</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav class="top-bar">
+        <div class="nav-content">
+            <div class="brand">
+                <img src="mbgkita.png" class="nav-logo" alt="Logo">
+                <span class="app-name">Ekosistem MBG</span>
+            </div>
+            
+            <div class="user-menu-wrapper">
+                <div class="user-avatar" id="profileIcon" onclick="toggleProfileMenu(event)">👤</div>
+                
+                <div id="profileDropdown" class="dropdown-content">
+                    <div class="dropdown-header">
+                        <div class="profile-preview-img">👤</div>
+                        <div class="profile-info">
+                            <p id="dropdownName"></p>
+                            <p id="dropdownRole"></p>
+                        </div>
+                    </div>
+                    <hr class="dropdown-divider">
+                    <nav class="dropdown-links">
+                        <a href="profile.html"><span>⚙️</span> Edit Profile</a>
+                        <a href="#" onclick="handleLogout()" class="logout-link"><span>🚪</span> Logout</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="responsive-container">
+        <div class="main-content-area">
+            <h2 id="welcomeText" class="greeting" style="margin-bottom: 25px; color: #1c4d8d;">Hi, [user]</h2>
+
+            <div class="dashboard-grid">
+                <section class="chart-section">
+                    <div class="card-header" style="margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+                        <h3 style="color: #1c4d8d; font-size: 1.1rem;">2025 Recipe Usage</h3>
+                    </div>
+                    <div class="chart-wrapper" style="height: 300px; position: relative;">
+                        <canvas id="usageChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="log-section">
+                    <div class="card-header" style="margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+                        <h3 style="color: #1c4d8d; font-size: 1.1rem;">Recent Activity Log</h3>
+                    </div>
+                    <ul id="activityLogList" class="log-container">
+                        </ul>
+                </section>
+
+                <section class="recipes-section">
+                    <div class="section-header">
+                        <h3>My Recipes</h3>
+                        <a href="add_menu.html" class="add-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </a>
+                    </div>
+                    <div id="menuList" class="vertical-stack">
+                        </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <div id="viewModal" class="modal">
+        <div class="modal-content card-large">
+            <div class="modal-header">
+                <h2 id="viewMenuName">Detail Resep</h2>
+                <span class="close-modal" onclick="closeViewModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="viewMenuImageContainer"></div>
+                <div class="view-section">
+                    <h3>Deskripsi</h3>
+                    <p id="viewMenuDesc"></p>
+                </div>
+                <div class="view-section">
+                    <h3>Bahan-Bahan</h3>
+                    <ul id="viewIngredientsList" class="detail-list"></ul>
+                </div>
+                <div class="view-section">
+                    <h3>Langkah Memasak</h3>
+                    <ol id="viewProceduresList" class="detail-list"></ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="dashboard-logic.js"></script>
+</body>
+</html>

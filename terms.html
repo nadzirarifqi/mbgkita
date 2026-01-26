@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T&C - Perencanaan Menu</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+</head>
+<body class="auth-page">
+
+    <div class="logo-container">
+        <img src="mbgkita.png" alt="MBGKita" class="center-logo">
+    </div>
+
+    <p class="notice-title" style="color: white; margin-bottom: 20px;">
+        Keputusan Kepala Badan Gizi Nasional <br> no. 244 tahun 2025
+    </p>
+
+    <div class="card" style="max-width: 500px; text-align: left;">
+        <h3 style="text-align: center; margin-bottom: 15px;">Perencanaan Menu</h3>
+        
+        <ul style="font-size: 0.85rem; list-style-type: lower-alpha; padding-left: 20px; line-height: 1.6; color: #333;">
+            <li>Memenuhi kebutuhan gizi satu kali makan MBG sesuai kelompok usia.</li>
+            <li>Menyesuaikan dengan dana yang disediakan.</li>
+            <li>Memberikan kenyamanan dengan sajian makanan yang sudah dikenal dan berasal dari sumber pangan lokal.</li>
+            <li>Membantu membentuk kebiasaan makanan sehat (mengenalkan aneka ragam sumber makanan secara dini).</li>
+            <li>Menggunakan sumber pangan yang aman dan lingkungan produksi makanan dengan sanitasi dan <i>hygiene</i> yang baik.</li>
+            <li>Mengidentifikasi sasaran yang memiliki alergi, intoleransi, atau fobia terhadap makanan tertentu dan menyediakan alternatif makanan lain.</li>
+            <li>Mempertimbangkan kesukaan dan ketidaksukaan anak terhadap makanan dan menu yang diberikan.</li>
+            <li>Memperhatikan kesesuaian pemorsian makanan yang dihidangkan dengan perencanaan menu yang telah dibuat.</li>
+            <li>Menggunakan bahan pangan wajib terfortifikasi seperti tepung terigu, minyak kelapa sawit kemasan, garam beryodium, dan jika tersedia beras terfortifikasi.</li>
+            <li>Perencanaan menu disusun dalam sebuah Perencanaan Menu Bulanan yang disusun paling lambat 2 minggu sebelumnya.</li>
+            <li>Penentuan bahan pangan dan menu yang akan diterapkan setiap SPPG per siklus menu disusun perlu dikoordinasikan antar tenaga gizi SPPG dalam waktu satu wilayah untuk mencegah kelangkaan bahan pangan.</li>
+        </ul>
+
+        <div style="text-align: right; margin-top: 20px;">
+            <a id="continueLink" style="display: none; color: #1c4d8d; font-weight: bold; text-decoration: none; cursor: pointer;">
+                Press to continue >>
+            </a>
+            <span id="timerText" style="font-size: 0.8rem; color: #888;">Wait <span id="seconds">5</span>s to read...</span>
+        </div>
+    </div>
+
+    <script>
+       // 1. Redirect logic based on SESSION data
+        function goToDashboard() {
+            const role = sessionStorage.getItem('userRole'); // Swapped to sessionStorage
+            const userID = sessionStorage.getItem('userID');
+            const userName = sessionStorage.getItem('userName');
+            const scriptURL = 'YOUR_APPS_SCRIPT_URL_HERE'; // Ensure this is defined
+
+            // Optional: Log that the user accepted the T&C
+            fetch(`${scriptURL}?action=logOnly&userId=${userID}&name=${userName}&event=TC_Accepted&details=User accepted terms and moved to dashboard`);
+
+            if (role === "Recipe Developer") window.location.href = "developer_dashboard.html";
+            else if (role === "Menu Planner") window.location.href = "planner_dashboard.html";
+            else if (role === "Supplier") window.location.href = "supplier_dashboard.html";
+            else window.location.href = "index.html";
+        }
+
+        // 2. 5-Second Countdown
+        let timeLeft = 5;
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            const secondsSpan = document.getElementById('seconds');
+            if (secondsSpan) secondsSpan.innerText = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('timerText').style.display = 'none';
+                const link = document.getElementById('continueLink');
+                link.style.display = 'inline';
+                link.onclick = goToDashboard;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

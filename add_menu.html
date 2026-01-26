@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Recipe - Ekosistem MBG</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+</head>
+<body class="auth-page">
+
+    <div class="card card-large">
+        <h2>Create New Recipe</h2>
+        <p class="card-subtitle">Standardize your recipe for the National Nutrition Program.</p>
+
+        <form id="recipeForm">
+            <label class="input-label">Recipe Name</label>
+            <input type="text" id="menuName" placeholder="e.g., Nasi Kuning Ayam Suwir" required>
+
+            <label class="input-label">Short Description</label>
+            <textarea id="menuDesc" placeholder="Briefly describe the taste or origin..."></textarea>
+
+            <label class="input-label">Image URL</label>
+            <input type="text" id="menuImage" placeholder="https://image-link.com/photo.jpg">
+
+            <hr class="section-divider">
+
+            <div class="section-header">
+                <h3>Ingredients Details</h3>
+                <button type="button" class="add-btn" onclick="addIngredientRow()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="ingredientContainer"></div>
+
+            <hr class="section-divider">
+
+            <div class="section-header">
+                <h3>Cooking Procedure</h3>
+                <button type="button" class="add-btn" onclick="addStepRow()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="stepContainer"></div>
+
+            <hr class="section-divider">
+
+            <label class="input-label">Cooking Video URL (Optional)</label>
+            <input type="text" id="menuVideo" placeholder="https://youtube.com/watch?v=...">
+            
+            <div class="form-actions">
+                <button type="submit" class="primary-btn">Publish Recipe</button>
+                <button type="button" class="secondary-btn" onclick="history.back()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <datalist id="common-ingredients"></datalist>
+    <datalist id="common-urts"></datalist>
+    <script src="add-recipe-logic.js"></script>
+</body>
+</html>
