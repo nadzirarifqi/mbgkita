@@ -32,22 +32,36 @@ function addIngredientRow() {
     if (!container) return;
     const id = Date.now();
     
+    //menambahkan button tambah dan hapus pada baris bahan
     const html = `
         <div class="dynamic-row" id="ing-${id}" style="margin-bottom: 15px;">
             <div style="display: flex; gap: 10px; align-items: center;">
                 <input type="text" class="ing-name" placeholder="Nama Bahan" 
-                       list="common-ingredients" onchange="fetchNutritionInfo(this)" required style="flex: 3;">
+                    list="common-ingredients" onchange="fetchNutritionInfo(this)" required style="flex: 3;">
                 
                 <input type="number" class="ing-qty" placeholder="Qty" step="any" required style="flex: 1;">
                 
                 <input type="text" class="ing-urt" placeholder="Satuan" 
-                       list="common-urts" required style="flex: 1.5;">
-                
-                <button type="button" class="delete-row-btn" onclick="removeRow('ing-${id}')">×</button>
+                    list="common-urts" required style="flex: 1.5;">                
+ 
+            <div class="row-action-btns">
+                <button type="button"
+                        class="delete-row-btn"
+                        onclick="removeRow('ing-${id}')">
+                    ×
+                </button>
+                <button type="button"
+                        class="add-row-btn"
+                        onclick="addIngredientRow()">
+                    +
+                </button>
+            </div>
             </div>
             <div class="nutrition-display" style="font-size: 0.75rem; color: #166534; margin-top: 4px; min-height: 1em;"></div>
         </div>
-    `;
+        
+    `; 
+    
     container.insertAdjacentHTML('beforeend', html);
 }
 
@@ -105,8 +119,18 @@ function addStepRow() {
         <div class="dynamic-row step-entry" id="step-${id}">
             <span class="step-num"></span>
             <input type="text" class="step-text" placeholder="Jelaskan langkah memasak..." required>
-            <button type="button" class="delete-row-btn" onclick="removeRow('step-${id}')">×</button>
-        </div>
+            <div class="row-action-btns">
+                <button type="button"
+                        class="delete-row-btn"
+                        onclick="removeRow('step-${id}')">
+                    ×
+                </button>
+                <button type="button"
+                        class="add-row-btn"
+                        onclick="addIngredientRow()">
+                    +
+                </button>
+            </div>
     `;
     container.insertAdjacentHTML('beforeend', html);
     renumberSteps();
