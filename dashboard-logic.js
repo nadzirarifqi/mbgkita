@@ -1,5 +1,5 @@
 // 1. CONFIGURATION & SESSION RETRIEVAL
-const scriptURL = 'https://script.google.com/macros/s/AKfycbytLLtPefPOqbqZjp4rQVPSii91xS_OpIvIPQW6Q7WG9u1lJ_4mWvBl1QmAjfiXM5NcIw/exec'; 
+const scriptURL = 'https://script.google.com/macros/s/AKfycby8NKHfxf8D8DpIP9DIXIktHL2cbi_Jz1sS4j_UqdKyBbvWsD2ksmlgmUhce_AiuwsCdw/exec'; 
 
 // Data is now pulled from sessionStorage for better security
 const userID = sessionStorage.getItem('userID');
@@ -95,23 +95,29 @@ function fetchUserRecipes() {
         .catch(err => console.error("Fetch error:", err));
 }
 
-// Fungsi untuk mengambil log dari Apps Script
 function fetchActivityLogs() {
     const logContainer = document.getElementById('activityLogList');
     if (!logContainer) return;
 
-    // Pastikan userID diambil dari sessionStorage
     const currentUserID = sessionStorage.getItem('userID');
+    console.log("Mengambil log untuk UserID:", currentUserID); // Debug log
 
-    // Tambahkan parameter &userId= ke URL fetch
     fetch(`${scriptURL}?action=readLogs&userId=${currentUserID}`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
         .then(data => {
-            renderLogs(data);
+            console.log("Data log diterima:", data); // Lihat di Console F12
+            if (data.length === 0) {
+                logContainer.innerHTML = "<li class='log-item'>Belum ada aktivitas.</li>";
+            } else {
+                renderLogs(data);
+            }
         })
         .catch(err => {
             console.error("Gagal memuat log:", err);
-            logContainer.innerHTML = "<li class='log-item'>Gagal memuat aktivitas.</li>";
+            logContainer.innerHTML = `<li class='log-item'>Gagal memuat aktivitas: ${err.message}</li>`;
         });
 }
 
@@ -122,13 +128,13 @@ function renderLogs(logs) {
     
     logContainer.innerHTML = "";
 
-    if (!logs || logs.length === 0) {
+    // PERBAIKAN: Cek apakah logs adalah Array dan memiliki isi
+    if (!Array.isArray(logs) || logs.length === 0) {
         logContainer.innerHTML = "<li class='log-item' style='text-align:center; color:#999; padding:10px;'>Belum ada aktivitas.</li>";
         return;
     }
 
     logs.forEach(log => {
-        // Format Tanggal
         let dateStr = "Baru saja";
         if (log.timestamp) {
             const d = new Date(log.timestamp);
@@ -264,6 +270,7 @@ function handleDelete(menuID) {
     });
 }
 
+
 // 7. LOGOUT (Clearing Session)
 function handleLogout() {
     if (!confirm("Logout from Ekosistem MBG?")) return;
@@ -276,3 +283,15 @@ function handleLogout() {
             window.location.href = "index.html";
         });
 }
+
+// Tambahkan ini di bagian bawah dashboard-logic.js
+function startAutoRefresh() {
+    setInterval(() => {
+        console.log("Menyegarkan data resep dan log...");
+        fetchUserRecipes();
+        fetchActivityLogs();
+    }, 30000); // Segarkan setiap 30 detik
+}
+
+// Panggil fungsi ini di dalam document.addEventListener('DOMContentLoaded', ...)
+startAutoRefresh();

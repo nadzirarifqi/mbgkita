@@ -1,5 +1,5 @@
 // 1. CONFIGURATION
-const scriptURL = 'https://script.google.com/macros/s/AKfycbytLLtPefPOqbqZjp4rQVPSii91xS_OpIvIPQW6Q7WG9u1lJ_4mWvBl1QmAjfiXM5NcIw/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycby8NKHfxf8D8DpIP9DIXIktHL2cbi_Jz1sS4j_UqdKyBbvWsD2ksmlgmUhce_AiuwsCdw/exec';
  // Replace with your actual Web App URL
 const USER_SHEET = 'Users'; // The exact name of your Tab in Google Sheets
 
