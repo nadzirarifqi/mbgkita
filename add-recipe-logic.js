@@ -127,7 +127,7 @@ function addStepRow() {
                 </button>
                 <button type="button"
                         class="add-row-btn"
-                        onclick="addIngredientRow()">
+                        onclick="addStepRow()">
                     +
                 </button>
             </div>
